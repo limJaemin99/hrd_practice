@@ -1,0 +1,64 @@
+@charset "UTF-8";
+
+html, body {
+	margin: 0px;
+	height: 100vh;
+}
+
+header {
+	background-color: blue;
+	min-height: 12vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+header h2 {
+	color: white;
+}
+
+nav {
+	background-color: skyblue;
+	min-height: 4vh;
+	display: flex;
+	align-items: center;
+}
+
+nav ul {
+	padding: 0px;
+}
+
+nav ul li {
+	list-style: none;
+	float: left;
+	margin-left: 10px;
+}
+
+nav ul li a {
+	text-decoration: none;
+	color: white;
+	font-weight: bold;
+}
+
+section {
+	background-color: lightgray;
+	min-height: 78vh;
+	margin: 0px;
+	padding: 10px;
+}
+
+section h1 {
+	text-align: center
+}
+
+footer {
+	background-color: blue;
+	min-height: 6vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+footer h4{
+	color: white;
+}
