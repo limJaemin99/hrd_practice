@@ -1,0 +1,106 @@
+-- 생년월일 ▶ yyyy년mm월dd일
+-- 성별 ▶ M : 남 / F : 여
+-- 전화번호 ▶ xxx-xxxx-xxxx
+-- 지역 항목 ▶ 10 : 서울 / 20 : 경기 / 30 : 강원 / 40 : 대구
+
+select p_no, p_name,
+		substr(p_birth,1,4) || '년' || substr(p_birth,5,2) || '월' || substr(p_birth,7) || '일' as p_birth,
+		case
+			when p_gender = 'M' then '남'
+			when p_gender = 'F' then '여'
+		end as p_gender,
+		p_tel1 || '-' || p_tel2 || '-' || p_tel3 as p_tel,
+		case
+			when p_city = '10' then '서울'
+			when p_city = '20' then '경기'
+			when p_city = '30' then '강원'
+			when p_city = '40' then '대구'
+		end as p_city
+from TBL_PATIENT_202004;
+
+------------------------------------------------------------------
+-- [코드]검사명  형식으로 출력
+
+select t_code, t_name,
+	'[' || t_code || ']' || t_name as t_full
+from tbl_lab_test_202004
+order by t_full;
+
+------------------------------------------------------------------
+-- 검사 상태 ▶ 1 : 검사중 / 2 : 검사완료
+-- 검사 시작/완료일자 ▶ yyyy-mm-dd 형식
+-- 검사 결과 ▶ X : 미입력 / P : 양성 / N : 음성
+-- 환자번호 오름차순
+
+-- 환자 테이블 : 환자번호, 환자명
+-- 결과 테이블 : 환자번호, 검사코드, 검사 시작일, 검사 상태, 검사 완료일, 검사 결과
+-- 검사 테이블 : 검사 코드, 검사명
+
+-- [순서]
+-- 1. 결과 테이블 Join 검사 테이블 On 검사코드
+-- 2. 환자 테이블 Join 1번(서브쿼리) On 환자번호
+
+select * from TBL_PATIENT_202004;
+select * from tbl_result_202004;
+select * from tbl_lab_test_202004;
+
+-- 1번 쿼리
+select p_no, t_name,
+	to_char(t_sdate,'yyyy-mm-dd') as t_sdate,
+	case
+		when t_status = '1' then '검사중'
+		when t_status = '2' then '검사완료'
+	end as t_status,
+	to_char(t_ldate,'yyyy-mm-dd') as t_ldate,
+	case
+		when t_result = 'X' then '미입력'
+		when t_result = 'P' then '양성'
+		when t_result = 'N' then '음성'
+	end as t_result
+from tbl_result_202004 a
+join tbl_lab_test_202004 b
+on a.t_code = b.t_code
+order by p_no;
+
+-- 2번 쿼리
+select a.p_no, p_name, b.t_name, b.t_sdate, b.t_status, b.t_ldate, b.t_result
+from TBL_PATIENT_202004 a
+join (select p_no, t_name,
+			to_char(t_sdate,'yyyy-mm-dd') as t_sdate,
+			case
+				when t_status = '1' then '검사중'
+				when t_status = '2' then '검사완료'
+			end as t_status,
+			to_char(t_ldate,'yyyy-mm-dd') as t_ldate,
+			case
+				when t_result = 'X' then '미입력'
+				when t_result = 'P' then '양성'
+				when t_result = 'N' then '음성'
+			end as t_result
+		from tbl_result_202004 a
+		join tbl_lab_test_202004 b
+		on a.t_code = b.t_code
+		order by p_no) b
+on a.p_no = b.p_no;
+
+------------------------------------------------------------------
+-- 필요한 것들 : 지역 코드, 지역명, 검사건수
+-- 환자 리스트 + 검사 결과 테이블 join 후 group 하기
+
+select * from TBL_PATIENT_202004;
+select * from tbl_result_202004;
+
+select p_city,
+		case
+			when p_city = '10' then '서울'
+			when p_city = '20' then '경기'
+			when p_city = '30' then '강원'
+			when p_city = '40' then '대구'
+		end as cityName,
+count(*) as count
+from TBL_PATIENT_202004 a
+join tbl_result_202004 b
+on a.p_no = b.p_no
+group by p_city
+order by p_city;
+
