@@ -1,0 +1,58 @@
+@charset "UTF-8";
+
+html, body {
+	height: 100vh;
+	margin: 0px;
+}
+
+header {
+	background-color: blue;
+	min-height: 12vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+nav {
+	min-height: 4vh;
+	background-color: skyblue;
+	margin: 0px;
+	padding: 0px;
+	display: flex;
+	align-content: center;
+}
+
+nav ul {
+	padding: 0px;
+}
+
+nav ul li {
+	list-style: none;
+	float: left;
+	padding-left: 10px;
+}
+
+nav ul li a {
+	text-decoration: none;
+	color: white;
+	font-weight: bold;
+}
+
+section {
+	min-height: 78vh;
+	background-color: lightgray;
+	margin: 0px;
+	padding: 10px;
+}
+
+section h1 {
+	text-align: center;
+}
+
+footer {
+	min-height: 6vh;
+	background-color: blue;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

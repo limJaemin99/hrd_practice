@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+table {
+	border-collapse: separate;
+	border: 1px solid black;
+	margin: 0px auto;
+	width: 500px;
+}
+
+th, td {
+	border: 1px solid black;
+	padding: 2px;
+}
+
+th {
+	width: 150px;
+}
+
+td {
+	width: 350px;
+	padding-left: 10px;
+}
+
+input[type="text"] {
+	width: 100px;
+}
+
+#buttons {
+	text-align: center;
+}
