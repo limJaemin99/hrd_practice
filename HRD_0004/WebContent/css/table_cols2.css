@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+table {
+	width: 600px;
+}
+
+th {
+	width: 150px;
+}
+
+td {
+	width: 450px;
+}
