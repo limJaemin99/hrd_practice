@@ -1,0 +1,70 @@
+select Max(resvno)+1 from tbl_vaccresv;
+
+select count(*) from tbl_vaccresv where resvno = ?;
+
+
+select * from tbl_vaccresv;
+select * from tbl_jumin;
+select * from tbl_hosp;
+
+select a.resvno, name, 
+		case
+			when substr(a.jumin,8,1)='1' then '남'
+			when substr(a.jumin,8,1)='2' then '여'
+		end as gender,
+		hospcode, to_char(resvdate, 'yyyymmdd') as resvdate, resvtime, vcode
+from tbl_vaccresv a
+join tbl_jumin b
+on a.jumin = b.jumin
+where resvno = 20210001;
+
+select resvno, name, gender, hospname, resvdate, resvtime, vcode, hospaddr
+from tbl_hosp a
+join(
+	select a.resvno, name, 
+			case
+				when substr(a.jumin,8,1)='1' then '남'
+				when substr(a.jumin,8,1)='2' then '여'
+			end as gender,
+			hospcode, to_char(resvdate, 'yyyymmdd') as resvdate, resvtime, vcode
+	from tbl_vaccresv a
+	join tbl_jumin b
+	on a.jumin = b.jumin
+	where resvno = 20210001) b
+on a.hospcode = b.hospcode;
+
+--select hospcode, hospaddr,
+--		case
+--			when hospaddr = '10' then '서울'
+--			when hospaddr = '20' then '대전'
+--			when hospaddr = '30' then '대구'
+--			when hospaddr = '40' then '광주'
+--		end as addrname
+--from tbl_hosp;
+
+
+select hospcode, count(*) as counts
+from tbl_vaccresv
+group by (hospcode)
+order by hospcode;
+
+select hospaddr, addrname, counts
+from (
+	select hospcode, hospaddr,
+			case
+				when hospaddr = '10' then '서울'
+				when hospaddr = '20' then '대전'
+				when hospaddr = '30' then '대구'
+				when hospaddr = '40' then '광주'
+			end as addrname
+	from tbl_hosp) a
+left join (
+	select hospcode, count(*) as counts
+	from tbl_vaccresv
+	group by (hospcode)
+	order by hospcode
+) b
+on a.hospcode = b.hospcode;
+
+
+
